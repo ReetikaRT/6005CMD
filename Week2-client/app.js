@@ -1,4 +1,4 @@
-const apiUrl = 'https://jsonplaceholder.typicode.com/posts';
+const apiUrl = 'http://localhost:3000/api/v1/articles';
 // Function to fetch posts
 async function fetchPosts() {
     console.log("Fetching posts...");
@@ -20,3 +20,14 @@ async function fetchPosts() {
 }
 // Run immediately when page loads
 fetchPosts();
+async function submitPost() {
+    const title = document.getElementById('post-title').value;
+    const body = document.getElementById('post-body').value;
+    // Send data to OUR server
+    await fetch('http://localhost:3000/api/v1/articles', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+    });
+    // Refresh the list
+    fetchPosts();
+}
