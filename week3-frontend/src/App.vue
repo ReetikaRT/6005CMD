@@ -1,21 +1,41 @@
 <script setup>
-import { ref } from 'vue'
 
-// "ref" makes a variable reactive.
-// If this changes, the HTML updates automatically.
-const count = ref(0)
+import { ref, onMounted } from 'vue'
+// 2. Create a
+// reactive box to hold the list
+const articles = ref([])
+// 3. Fetch data ONLY
+// when the component mounts
+onMounted(async () => {
+ try {
+ const response = await fetch('http://localhost:3000/api/v1/articles')
+ const data = await response.json()
+ articles.value = data // Update the reactive
+// variable
+ } catch (error) {
+ console.error('Error fetching articles:', error)
+ }
+})
 
-function increment() {
-  count.value++ // Notice: In script, we use .value
-}
 </script>
 
 <template>
-  <h1>My Counter</h1>
- <p>Current count: {{ count }}</p>
- <button @click="increment">Add 1</button>
+
+ <h1>Latest Articles</h1>
+
+ <div v-for="article in articles" :key="article.id" class="article-card">
+ <h2>{{ article.title }}</h2>
+ <p>{{ article.fullText }}</p>
+  </div>
 </template>
 
 <style scoped>
-  /* CSS goes here */
+
+.article-card {
+ border: 1px solid #ccc;
+ padding: 10px;
+ margin: 10px 0;
+ border-radius: 8px;
+ background-color: #f9f9f9;
+}
 </style>
