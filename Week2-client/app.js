@@ -31,3 +31,15 @@ async function submitPost() {
     // Refresh the list
     fetchPosts();
 }
+async function submitPost() {
+    const title = document.getElementById('post-title').value;
+    const body = document.getElementById('post-body').value;
+    // Send data to OUR server
+    await fetch('http://localhost:3000/api/v1/articles', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ title: title, fullText: body }) // Note: Backend expects fullText, not body!
+    });
+    // Refresh the list
+    fetchPosts();
+}
