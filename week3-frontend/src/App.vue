@@ -1,44 +1,41 @@
 <script setup>
-
-import { ref, onMounted } from 'vue'
-// 2. Create a
-// reactive box to hold the list
-const articles = ref([])
-const loading = ref(true)
-// 3. Fetch data ONLY
-// when the component mounts
-onMounted(async () => {
- try {
- const response = await fetch('http://localhost:3000/api/v1/articles')
- const data = await response.json()
- loading.value = false
- articles.value = data // Update the reactive
-// variable
- } catch (error) {
- console.error('Error fetching articles:', error)
- }
-})
-
+import { Layout, LayoutHeader, LayoutContent, LayoutFooter } from 'ant-design-vue'
+import BlogGrid from './components/BlogGrid.vue'
 </script>
-
-
 <template>
- <div style="padding: 50px;">
- <h1>Design System Test</h1>
- <a-button type="primary">My First Ant Button</a-button>
- <br /><br />
- <a-button type="dashed" danger>Dangerous Button</a-button>
+ <a-layout class="layout">
+ <a-layout-header>
+ <div class="logo">My Blog</div>
+ <div style="color: white; float: right;">Welcome User</div>
+ </a-layout-header>
+
+ <a-layout-content style="padding: 0 50px">
+ <div class="site-layout-content">
+ <h1>Latest Posts</h1>
+ <BlogGrid />
  </div>
+ </a-layout-content>
+
+ <a-layout-footer style="text-align: center">
+ Web API Development ©2026 Created by You
+ </a-layout-footer>
+ </a-layout>
 </template>
-
-
 <style scoped>
-
-.article-card {
- border: 1px solid #ccc;
- padding: 10px;
- margin: 10px 0;
- border-radius: 8px;
- background-color: #f9f9f9;
+/* Specific overrides for Ant Design components */
+.site-layout-content {
+ background: #fff;
+ padding: 24px;
+ min-height: 280px;
+ margin-top: 24px;
+}
+.logo {
+ float: left;
+ width: 120px;
+ height: 31px;
+ color: white;
+ font-size: 1.5rem;
+ font-weight: bold;
+ line-height: 64px; /* Vertically center in header */
 }
 </style>
