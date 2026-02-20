@@ -4,12 +4,14 @@ import { ref, onMounted } from 'vue'
 // 2. Create a
 // reactive box to hold the list
 const articles = ref([])
+const loading = ref(true)
 // 3. Fetch data ONLY
 // when the component mounts
 onMounted(async () => {
  try {
  const response = await fetch('http://localhost:3000/api/v1/articles')
  const data = await response.json()
+ loading.value = false
  articles.value = data // Update the reactive
 // variable
  } catch (error) {
@@ -22,6 +24,12 @@ onMounted(async () => {
 <template>
 
  <h1>Latest Articles</h1>
+
+<div v-if="loading">
+ Loading articles... please wait.
+</div>
+<div v-else>
+</div>
 
  <div v-for="article in articles" :key="article.id" class="article-card">
  <h2>{{ article.title }}</h2>
