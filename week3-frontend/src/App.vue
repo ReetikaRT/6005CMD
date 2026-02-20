@@ -21,21 +21,16 @@ onMounted(async () => {
 
 </script>
 
+
 <template>
-
- <h1>Latest Articles</h1>
-
-<div v-if="loading">
- Loading articles... please wait.
-</div>
-<div v-else>
-</div>
-
- <div v-for="article in articles" :key="article.id" class="article-card">
- <h2>{{ article.title }}</h2>
- <p>{{ article.fullText }}</p>
-  </div>
+ <div style="padding: 50px;">
+ <h1>Design System Test</h1>
+ <a-button type="primary">My First Ant Button</a-button>
+ <br /><br />
+ <a-button type="dashed" danger>Dangerous Button</a-button>
+ </div>
 </template>
+
 
 <style scoped>
 
