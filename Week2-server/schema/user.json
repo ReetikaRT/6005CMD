@@ -1,0 +1,68 @@
+{
+    "definitions": {
+        "user": {
+            "id": "/user",
+            "type": "object",
+            "properties": {
+                "username": {
+                    "type": "string",
+                    "minLength": 3
+                },
+                "email": {
+                    "type": "string",
+                    "format": "email"
+                },
+                "password": {
+                    "type": "string",
+                    "minLength": 6
+                },
+                "firstName": {
+                    "type": "string"
+                },
+                "lastName": {
+                    "type": "string"
+                },
+                "about": {
+                    "type": "string"
+                },
+                "avatarURL": {
+                    "type": "string",
+                    "format": "uri"
+                }
+            },
+            "required": [
+                "username",
+                "email",
+                "password"
+            ],
+            "additionalProperties": false
+        },
+        "userUpdate": {
+            "type": "object",
+            "properties": {
+                "firstName": {
+                    "type": "string"
+                },
+                "lastName": {
+                    "type": "string"
+                },
+                "about": {
+                    "type": "string"
+                },
+                "password": {
+                    "type": "string",
+                    "minLength": 6
+                },
+                "email": {
+                    "type": "string",
+                    "format": "email"
+                },
+                "avatarURL": {
+                    "type": "string",
+                    "format": "uri"
+                }
+            },
+            "additionalProperties": false
+        }
+    }
+}
