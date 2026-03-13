@@ -1,6 +1,6 @@
 <script setup>
 import { RouterView, RouterLink } from 'vue-router'
-import { Layout, LayoutHeader, LayoutContent, LayoutFooter, Menu, MenuItem } from 'ant-designvue'
+import { Layout, LayoutHeader, LayoutContent, LayoutFooter, Menu, MenuItem } from 'ant-design-vue'
 import { useUserStore } from '@/stores/user' // Import Store
 const userStore = useUserStore()
 </script>

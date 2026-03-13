@@ -4,11 +4,15 @@ const model = require('../models/users');
 const { validateUser } = require('../controllers/validation'); // Import our checker
 const prefix = '/api/v1/users';
 const router = new Router({ prefix: prefix });
+const bcrypt = require('bcrypt');
+
 // Routes
 // We insert 'validateUser' BEFORE 'createUser'
 // If validation fails, createUser never runs.
 router.post('/', bodyParser(), validateUser, createUser);
 router.get('/:id', getById);
+router.post('/login', loginUser);
+
 async function createUser(ctx) {
     const body = ctx.request.body;
 
@@ -44,3 +48,41 @@ async function getById(ctx) {
 }
 
 module.exports = router;
+
+// This logic intercepts the Basic auth header our Vue frontend sends, decodes it, and checks the database
+async function loginUser(ctx) {
+    // 1. Grab the Authorization header
+    const authHeader = ctx.request.headers.authorization;
+
+    if (!authHeader || !authHeader.startsWith('Basic ')) {
+        ctx.status = 401;
+        ctx.body = { message: "Missing or invalid authorization header" };
+        return;
+    }
+    // 2. Decode the Base64 string back into "username:password"
+    const base64 = authHeader.split(' ')[1];
+    const plainText = Buffer.from(base64, 'base64').toString('utf-8');
+    const [username, password] = plainText.split(':');
+    // 3. Look up the user in the database
+    const result = await model.findByUsername(username);
+    if (result.length === 0) {
+        ctx.status = 401; // Unauthorized
+        ctx.body = { message: "Invalid username or password" };
+        return;
+    }
+    const user = result[0];
+
+    // 4. Use Bcrypt to compare the typed password with the stored hash
+    const isValid = bcrypt.compareSync(password, user.password);
+    if (isValid) {
+        // 5. Success! Strip out the password before sending the profile back
+        delete user.password;
+        delete user.passwordSalt;
+
+        ctx.status = 200;
+        ctx.body = user; // Send the user data back to Pinia!
+    } else {
+        ctx.status = 401; // Unauthorized
+        ctx.body = { message: "Invalid username or password" };
+    }
+}
